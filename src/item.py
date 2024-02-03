@@ -29,7 +29,8 @@ class Item:
         """
         Применяет установленную скидку для конкретного товара.
         """
-        return self.price * self.pay_rate
+        self.price *= self.pay_rate
+        return self.price
 
 
 def run_tests():
