@@ -16,6 +16,7 @@ class Item:
         self.name = name
         self.price = price
         self.quantity = quantity
+        Item.all.append(self)  # добавляем созданный экземпляр в список all
 
     def calculate_total_price(self) -> float:
         """
@@ -35,21 +36,22 @@ class Item:
 
 def run_tests():
     item1 = Item("Iphone", 1000, 4)
-    Item.all.append(item1)
     item2 = Item("TV", 5000, 2)
-    Item.all.append(item2)
     Item.pay_rate = 0.85
 
     # TestCase1
     assert item1.calculate_total_price() == 4000
     assert item1.apply_discount() == 850
+    assert isinstance(item1.apply_discount(), float)
 
     # TestCase2
     assert item2.calculate_total_price() == 10000
     assert item2.apply_discount() == 4250
+    assert isinstance(item2.apply_discount(), float)
 
     # TestCase3
     assert len(Item.all) == 2
 
 
-run_tests()
+# run_tests()
+# print(Item.all)
