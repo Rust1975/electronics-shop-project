@@ -1,9 +1,16 @@
+import csv
+import os
+
 class Item:
     """
     Класс для представления товара в магазине.
     """
     pay_rate = 1.0
     all = []
+
+    @staticmethod
+    def string_to_number(istr: str):
+        return int(istr)
 
     def __init__(self, name: str, price: float, quantity: int) -> None:
         """
@@ -13,10 +20,41 @@ class Item:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине.
         """
+        # self.__name = name
         self.name = name
-        self.price = price
-        self.quantity = quantity
+        self.price = float(price)
+        self.quantity = int(quantity)
         Item.all.append(self)  # добавляем созданный экземпляр в список all
+
+    # @property
+    # def name(self):
+    #     return self.__name
+    #
+    # @name.setter
+    # def name(self, value):
+    #     if len(value) > 10:
+    #         self.__name = value[:9]
+    #     else:
+    #          self.__name = value
+
+    @classmethod
+    def instantiate_from_csv(cls, ipath: str):
+        current_dir = os.path.dirname(__file__)
+        ipath = os.path.join(current_dir, ipath.split("/")[-1])
+        with open(ipath, encoding='windows-1251', newline='') as csvfile:
+        # with open(ipath, encoding='utf-8', newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            # cls.all.clear()
+            for row in reader:
+                # iname, iprice, iquantity = row
+                # cls(iname, iprice, iquantity)
+                # print(new_item.price)
+                # Item().init(iname, iprice, iquantity)
+                iname = row["name"]
+                iprice = row["price"]
+                iquantity = row["quantity"]
+                cls(iname, iprice, iquantity)
+            return cls
 
     def calculate_total_price(self) -> float:
         """
@@ -55,3 +93,7 @@ def run_tests():
 
 # run_tests()
 # print(Item.all)
+# print(Item.instantiate_from_csv("src/items.csv"))
+Item.instantiate_from_csv("src/items.csv")
+print(len(Item.all))
+print(Item.all[0].name)
