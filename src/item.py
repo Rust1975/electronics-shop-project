@@ -1,6 +1,7 @@
 import csv
 import os
 
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -10,7 +11,7 @@ class Item:
 
     @staticmethod
     def string_to_number(istr: str):
-        return int(istr)
+        return int(float(istr))
 
     def __init__(self, name: str, price: float, quantity: int) -> None:
         """
@@ -20,22 +21,21 @@ class Item:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине.
         """
-        # self.__name = name
-        self.name = name
+        self.__name = name
         self.price = float(price)
         self.quantity = int(quantity)
         Item.all.append(self)  # добавляем созданный экземпляр в список all
 
-    # @property
-    # def name(self):
-    #     return self.__name
-    #
-    # @name.setter
-    # def name(self, value):
-    #     if len(value) > 10:
-    #         self.__name = value[:9]
-    #     else:
-    #          self.__name = value
+    @property
+    def name(self):
+        return self.__name
+
+    @name.setter
+    def name(self, value):
+        if len(value) > 10:
+            self.__name = value[:10]
+        else:
+            self.__name = value
 
     @classmethod
     def instantiate_from_csv(cls, ipath: str):
@@ -44,12 +44,8 @@ class Item:
         with open(ipath, encoding='windows-1251', newline='') as csvfile:
         # with open(ipath, encoding='utf-8', newline='') as csvfile:
             reader = csv.DictReader(csvfile)
-            # cls.all.clear()
+            cls.all.clear()
             for row in reader:
-                # iname, iprice, iquantity = row
-                # cls(iname, iprice, iquantity)
-                # print(new_item.price)
-                # Item().init(iname, iprice, iquantity)
                 iname = row["name"]
                 iprice = row["price"]
                 iquantity = row["quantity"]
@@ -90,10 +86,14 @@ def run_tests():
     # TestCase3
     assert len(Item.all) == 2
 
+    # TestCase4
+    Item.instantiate_from_csv("src/items.csv")
+    assert len(Item.all) == 5
+    assert Item.all[3].name == "Мышка"
 
 # run_tests()
 # print(Item.all)
 # print(Item.instantiate_from_csv("src/items.csv"))
-Item.instantiate_from_csv("src/items.csv")
-print(len(Item.all))
-print(Item.all[0].name)
+# Item.instantiate_from_csv("src/items.csv")
+# print(len(Item.all))
+# print(Item.all[3].name)

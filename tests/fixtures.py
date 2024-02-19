@@ -9,3 +9,4 @@ def sample_items():
     item1 = Item("Iphone", 1000, 4)
     item2 = Item("TV", 5000, 2)
     return item1, item2
+
