@@ -38,3 +38,9 @@ def test_item_name(sample_items):
     item1, item2 = sample_items
     item1.name = "СуперСмартфон"
     assert item1.name == 'СуперСмарт'
+
+
+def test_repr_str():
+    item1 = Item("Смартфон", 10000, 20)
+    assert repr(item1) == "Item('Смартфон', 10000, 20)"
+    assert str(item1) == 'Смартфон'

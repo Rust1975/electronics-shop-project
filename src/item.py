@@ -6,6 +6,12 @@ class Item:
     """
     Класс для представления товара в магазине.
     """
+    def __repr__(self):
+        return f"{self.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
+
+    def __str__(self):
+        return f"{self.__name}"
+
     pay_rate = 1.0
     all = []
 
@@ -22,8 +28,8 @@ class Item:
         :param quantity: Количество товара в магазине.
         """
         self.__name = name
-        self.price = float(price)
-        self.quantity = int(quantity)
+        self.price = price
+        self.quantity = quantity
         Item.all.append(self)  # добавляем созданный экземпляр в список all
 
     @property
@@ -97,3 +103,6 @@ def run_tests():
 # Item.instantiate_from_csv("src/items.csv")
 # print(len(Item.all))
 # print(Item.all[3].name)
+# item1 = Item("Iphone", 1000, 4)
+# print(item1)
+# print(repr(item1))
