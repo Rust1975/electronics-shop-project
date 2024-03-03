@@ -27,8 +27,7 @@ class Phone(Item):
     def __add__(self, other):
         if isinstance(other, Item):
             return self.quantity + other.quantity
-        else:
-            return NotImplemented
+        raise TypeError('Unsupported operand type(s)')
 
 
 
