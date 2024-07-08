@@ -6,6 +6,24 @@ class Item:
     """
     Класс для представления товара в магазине.
     """
+
+    pay_rate = 1.0
+    all = []
+
+    def __init__(self, name: str, price: float, quantity: int) -> None:
+        """
+        Создание экземпляра класса item.
+
+        :param name: Название товара.
+        :param price: Цена за единицу товара.
+        :param quantity: Количество товара в магазине.
+        """
+        super().__init__() # Подмешиваем __init__ из Mixinlog
+        self.__name = name
+        self.price = price
+        self.quantity = quantity
+        Item.all.append(self)  # добавляем созданный экземпляр в список all
+
     def __repr__(self):
         return f"{self.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
 
@@ -18,25 +36,9 @@ class Item:
         else:
             return NotImplemented
 
-    pay_rate = 1.0
-    all = []
-
     @staticmethod
     def string_to_number(istr: str):
         return int(float(istr))
-
-    def __init__(self, name: str, price: float, quantity: int) -> None:
-        """
-        Создание экземпляра класса item.
-
-        :param name: Название товара.
-        :param price: Цена за единицу товара.
-        :param quantity: Количество товара в магазине.
-        """
-        self.__name = name
-        self.price = price
-        self.quantity = quantity
-        Item.all.append(self)  # добавляем созданный экземпляр в список all
 
     @property
     def name(self):
