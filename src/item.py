@@ -1,6 +1,11 @@
 import csv
 import os
+import chardet
 
+class InstantiateCSVError(Exception):
+    """Ошибка целостности данных."""
+    def __init__(self, message="Ошибка целостности данных"):
+        super().__init__(message)
 
 class Item:
     """
@@ -55,16 +60,26 @@ class Item:
     def instantiate_from_csv(cls, ipath: str):
         current_dir = os.path.dirname(__file__)
         ipath = os.path.join(current_dir, ipath.split("/")[-1])
-        with open(ipath, encoding='windows-1251', newline='') as csvfile:
-        # with open(ipath, encoding='utf-8', newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            cls.all.clear()
-            for row in reader:
-                iname = row["name"]
-                iprice = row["price"]
-                iquantity = row["quantity"]
-                cls(iname, iprice, iquantity)
-            return cls
+        try:
+            with open(ipath, encoding='windows-1251', newline='') as csvfile:
+            # with open(ipath, encoding='utf-8', newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                cls.all.clear()
+                for row in reader:
+                    iname = row.get("name")
+                    iprice = row.get("price")
+                    iquantity = row.get("quantity")
+                    if not iname or not iprice or not iquantity:
+                        raise InstantiateCSVError("_Файл item.csv поврежден_")
+                    cls(iname, iprice, iquantity)
+                return cls
+        except FileNotFoundError:
+            print("_Отсутствует файл item.csv_")
+
+    def get_encoding(ipath):
+        with open(ipath, 'rb') as f:
+            raw_data = f.read()
+        return chardet.detect(raw_data)['encoding']
 
     def calculate_total_price(self) -> float:
         """
@@ -114,3 +129,8 @@ def run_tests():
 # item1 = Item("Iphone", 1000, 4)
 # print(item1)
 # print(repr(item1))
+
+# file_path = "src/items.csv"
+# Item.instantiate_from_csv("src/items.csv")
+# encoding = Item.get_encoding("src/items.csv")
+# print(f"Detected encoding: {encoding}")

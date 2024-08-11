@@ -25,6 +25,7 @@ def test_instantiate_from_csv():
     Item.instantiate_from_csv("src/items.csv")
     assert len(Item.all) == 5
     assert Item.all[3].name == "Мышка"
+    assert Item.instantiate_from_csv("src/items_1.csv") == "_Отсутствует файл item.csv_"
 
 
 def test_string_to_number():
